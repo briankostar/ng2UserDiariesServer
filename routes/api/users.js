@@ -1,5 +1,8 @@
-var router = require( 'express' ).Router();
-var passport = require( 'passport' );
+var mongoose = require('mongoose');
+var router = require('express').Router();
+var passport = require('passport');
+var User = mongoose.model('User');
+var auth = require('../auth');
 
 //intended for /api/user
 //get token, validate it, then find user by id, then res
@@ -24,3 +27,5 @@ router.post('/users', function(req, res, next){
 		return res.json({user: user.toAuthJSON()});
 	}).catch(next);
 });
+
+module.exports = router;

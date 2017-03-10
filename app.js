@@ -17,7 +17,7 @@ var isProduction = process.env.NODE_ENV === 'production';
 var app = express();
 
 //config express
-app.use( cores() );
+app.use( cors() );
 app.use( require( 'morgan' )( 'dev' ) ); //morgan is express logger.
 app.use( bodyParser.urlencoded( { extended:false } ) );
 app.use( bodyParser.json() );
@@ -44,11 +44,11 @@ if( isProduction ){
 	mongoose.set( 'debug', true );
 }
 
-// require('./models/User');
+require('./models/User');
 // require('./models/Article');
 // require('./models/Comment');
 // require('./config/passport');
-// app.use(require('./routes'));
+app.use(require('./routes'));
 
 //if error, pass 404 and forward to next handler
 app.use( function( req, res, next ){
@@ -61,19 +61,20 @@ app.use( function( req, res, next ){
 if( !isProduction ){
 	app.use( function( err, req, res, next ){
 		console.log( err.stack );
+
 		res.status( err.status || 500 );
 
-		res.join( {
+		res.json( {
 			'errors':{
 				message:err.message,
 				error  :err
 			}
-		} )
+		} );
 	} );
 }
 
 //throw error but show no stack trace
-if( isProduction ){
+app.use( function( err, req, res, next ){
 	res.status( err.status || 500 );
 	res.json( {
 		'errors':{
@@ -81,7 +82,8 @@ if( isProduction ){
 			error  :{}
 		}
 	} );
-}
+} );
+
 
 var server = app.listen( process.env.PORT || 3000, function(){
 	console.log( 'Listening on port', server.address().port );
