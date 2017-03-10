@@ -15,20 +15,23 @@ var UserSchema = new mongoose.Schema({
 	salt: String
 }, {timestamps: true});
 
+//allows object validation in mongoose
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
+//set user salt and hash
 UserSchema.methods.setPassword = function(password){
 	this.salt = crypto.randomBytes(16).toString('hex');
-	//generate random bytes. <Buffer 47 d8 7c b0 4d 0a bc 92 4c 5b 45 40 01 5a 57 24>
-	//turn to hex d938cb169be9ac4694b019ca8b9ba83a
-	console.log('crypto.randomBytes(16)', crypto.randomBytes(16));
-	console.log('crypto.randomBytes(16.toString())', crypto.randomBytes(16).toString('hex'));
 	this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-	//hash: c0d0fbfea8d0a7e2fac4cd5f470d9e7b31619c45a8793607ec0f06f558833d04d1671630d6b150ac1b8df02dbcf37e2e98109baafc2efc0ae77a50031be14c451d73155e7fe124a538a70e69dafb0c4daa6a31775aee30ce98b06e533a33464d8901497575bd41dfddd6f491167e43c03710f52b8
-	console.log('salt::', this.salt);
-	console.log('hash::', this.hash);
 };
 
+//check if passed password generates the same hash
+UserSchema.methods.validPassword = function(password) {
+	var hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+	return this.hash === hash;
+};
+
+
+//return jwt. sign jwt with id, username, and expire date
 UserSchema.methods.generateJWT = function() {
 	var today = new Date();
 	var exp = new Date(today);

@@ -47,14 +47,16 @@ if( isProduction ){
 require('./models/User');
 // require('./models/Article');
 // require('./models/Comment');
-// require('./config/passport');
+require('./config/passport');
 app.use(require('./routes'));
 
 //if error, pass 404 and forward to next handler
 app.use( function( req, res, next ){
-	var err = new Error( 'Not Found' );
-	err.status = 404;
-	next( err );
+	// var err = new Error( 'Not Found' );
+	// err.status = 404;
+	// next( err );
+	console.log('error');
+	next();
 } );
 
 //on dev, log error stack and send 500. add the err msg
