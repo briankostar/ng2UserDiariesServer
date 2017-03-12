@@ -18,7 +18,7 @@ var ArticleSchema = new mongoose.Schema( {
 		ref :'Comment'
 	} ],
 	author     :{
-		type:mongoose.Schema.TYpe.ObjectId,
+		type:mongoose.Schema.Types.ObjectId,
 		ref :'User'
 	}
 }, { timestamp:true } );
