@@ -31,7 +31,7 @@ ArticleSchema.pre( 'validate', function(next){
 	next();
 } );
 
-Article.methods.slugify = function(){
+ArticleSchema.methods.slugify = function(){
 	this.slug = slug(this.title);
 };
 

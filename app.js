@@ -45,8 +45,8 @@ if( isProduction ){
 }
 
 require('./models/User');
-// require('./models/Article');
-// require('./models/Comment');
+require('./models/Article');
+require('./models/Comment');
 require('./config/passport');
 app.use(require('./routes'));
 

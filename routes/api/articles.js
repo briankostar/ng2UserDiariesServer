@@ -223,7 +223,7 @@ router.delete('/:article/comments/:comment', auth.required, function(req, res, n
 	}
 });
 
-module.exports = articles;
+module.exports = router;
 
 
 
