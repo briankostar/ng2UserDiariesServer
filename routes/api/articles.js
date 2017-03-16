@@ -5,7 +5,7 @@ var auth = require( '../auth' );
 
 var Article = mongoose.model( 'Article' );
 var User = mongoose.model( 'User' );
-// var Comment = mongoose.model('Comment');
+var Comment = mongoose.model('Comment');
 
 //for article params, get article, populate author, add to req body
 router.param( 'article', function( req, res, next, slug ){
